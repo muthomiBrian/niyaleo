@@ -1,0 +1,12 @@
+<!DOCTYPE html><!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Niya leo</title><link rel="stylesheet" href="./css/main.css"></head><body><header class="header"><nav class="nav"><a class="brand" href="/">Niya leo</a><button class="menu">☰</button></nav></header><main class="main"><div class="container"><p class="page-header">Your tasks</p></div><div class="task-container"></div></main><div class="center-float"><div class="new-task" hidden><div class="new-task-header"><p class="form-header">Add task</p><button class="close-new" onclick="hideCreateForm('.new-task', '.new-task-button')">x</button></div><form action=""><div class="input-group"><label for="taskDescNew" hidden>Task </label><textarea class="control-element" id="taskDescNew" name="taskDescNew" placeholder="Task"></textarea></div><div class="form-footer"><div class="input-group priority"><label for="taskPriority" hidden>Priority</label><select id="taskPriority" name="taskPriority"><option value="" selected>Set priority</option><option value="3">Low</option><option value="2">Mid</option><option value="1">High</option></select></div><div class="input-group estimate"><label for="taskTime">Estimate</label><select id="taskTime" name="taskTime"><option value="0.5 hr">0.5 hr</option><option value="1 hr">1 hr</option><option value="2 hr">2 hr</option><option value="4 hr">4 hr</option><option value="8 hr">8 hr</option><option value="2 days">2 days</option><option value="1 week">1 week</option></select></div></div><div class="submit-button"><button>Save Task</button></div></form></div><button class="new-task-button" onclick="showCreateForm('.new-task', '.new-task-button')">New Task</button></div><script src="./js/main.js"></script><script>const sortedTasks = sortTasks(mockTasks)
+renderTasks('.task-container', sortedTasks, priorityEnum);
+
+function showCreateForm(form, button) {
+  document.querySelector(form).removeAttribute('hidden');
+  document.querySelector(button).setAttribute('hidden', 'true');
+}
+
+function hideCreateForm(form, button) {
+  document.querySelector(button).removeAttribute('hidden');
+  document.querySelector(form).setAttribute('hidden', 'true')
+}</script></body></html>

@@ -5,11 +5,21 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
     title Niya leo
+    link(rel="stylesheet", href="./css/main.css")
+    style.
+      
   body
-    header
-      nav
-        a(href="/") Niya leo
+    header.header
+      nav.nav
+        a.brand(href="/") Niya leo
     
-    main
-      p.hero-text Flexible todo list and it lets you see what tasks you want to see. We don't like pressure, and we know you dont.
-      button.conversion Get started
+    main.main
+      p.hero-text Flexible todo list that lets you see what tasks you want to see. 
+      p.sidenote We don't like pressure, and we know you dont.
+      button.conversion(onclick="convert()") Get started
+
+    script.
+      function convert() {
+        location.assign('./tasks.html')
+      }
+      

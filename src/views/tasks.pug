@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title Niya leo
+    link(rel="stylesheet", href="./css/main.css")
+  body
+    header.header
+      nav.nav
+        a.brand(href="/") Niya leo
+        button.menu ☰
+    main.main
+      .container
+        p.page-header Your tasks
+      .task-container
+    .center-float
+      .new-task(hidden)
+        .new-task-header
+          p.form-header Add task
+          button.close-new(onclick="hideCreateForm('.new-task', '.new-task-button')") x
+        form(action="")
+          .input-group
+            label(for="taskDescNew" hidden) Task 
+            textarea#taskDescNew.control-element(name="taskDescNew" placeholder="Task")
+          .form-footer
+            .input-group.priority
+              label(for="taskPriority" hidden) Priority
+              select#taskPriority(name="taskPriority")
+                option(value="" selected) Set priority
+                option(value="3") Low
+                option(value="2") Mid
+                option(value="1") High
+            .input-group.estimate
+              label(for="taskTime") Estimate
+              select#taskTime(name="taskTime")
+                option(value="0.5 hr") 0.5 hr
+                option(value="1 hr") 1 hr
+                option(value="2 hr") 2 hr
+                option(value="4 hr") 4 hr
+                option(value="8 hr") 8 hr
+                option(value="2 days") 2 days
+                option(value="1 week") 1 week
+          .submit-button
+            button Save Task
+      button.new-task-button(onclick="showCreateForm('.new-task', '.new-task-button')") New Task
+    script(src="./js/main.js")
+    script.
+      const sortedTasks = sortTasks(mockTasks)
+      renderTasks('.task-container', sortedTasks, priorityEnum);
+
+      function showCreateForm(form, button) {
+        document.querySelector(form).removeAttribute('hidden');
+        document.querySelector(button).setAttribute('hidden', 'true');
+      }
+
+      function hideCreateForm(form, button) {
+        document.querySelector(button).removeAttribute('hidden');
+        document.querySelector(form).setAttribute('hidden', 'true')
+      }
+      

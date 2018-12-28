@@ -1,0 +1,149 @@
+@import './partials/normalize.scss';
+@import './partials//colors.scss';
+
+// Utilities
+.container {
+  padding: 10px;
+  background-color: $background-color-white;
+}
+
+.control-element {
+  width: 100%;
+}
+
+// UI elements
+button {
+  min-height: 40px;
+  border: none;
+  background-color: $button-dark;
+  color: $font-light;
+  padding: 0 10px;
+}
+
+select,
+input,
+textarea {
+  background: transparent;
+  min-height: 30px;
+  border: 1px #333 solid;
+}
+ 
+// Typography
+body {
+  font: 14px sans-serif;
+  color: $font-dark;
+  background-color: $background-light;
+}
+
+p,
+a {
+  font-size: 1em;
+}
+
+a {
+  color: $font-dark;
+  text-decoration: none;
+}
+
+// Navigation
+.nav {
+  padding: 20px;
+  background-color: $background-color-white;
+  display: flex;
+  .brand {
+    font-size: 1em;
+    width: calc( 100% - 33px);
+  }
+  .menu {
+    color: $font-dark;
+    background: transparent;
+    min-height: 0;
+    margin: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: -20px;
+  }
+
+}
+
+// Hero
+.main {
+  margin: 20px;
+  .hero-text {
+    font-size: 3em;
+  }
+  .sidenote {
+    margin-bottom: 3em;
+  }
+  .page-header {
+    margin: 0px;
+  }
+  .task {
+    margin-top: 20px;
+    .task-desc {
+      margin-top: 0;
+    }
+    .taskFooter {
+      display: flex;
+      .task-time {
+        margin-top: 10px;
+        text-align: right;
+        width: calc(100% - 60px);
+      }
+    }
+  }
+}
+
+.center-float {
+  text-align: center;
+  position: fixed;
+  width: calc(100% - 20px);
+  bottom: 0px;
+  padding: 10px;
+  background: $background-color-white;
+  button {
+    width: 80%;
+  }
+  .new-task {
+    text-align: left;
+    padding: 20px;
+    padding-top: 0;
+    padding-bottom: 0;
+    .new-task-header {
+      display: flex;
+      .form-header {
+        margin-bottom: 20px;
+        width: calc(100% - 30px);
+      }
+      .close-new {
+        width: 50px;
+        background:transparent;
+        color: $font-dark;
+        min-height: 0;
+        margin-top: -8px;
+        padding-right: 0;
+        margin-right: -20px;
+      }
+    }
+    .form-footer {
+      display: flex;
+      .priority {
+        width: 100%;
+      }
+      .estimate {
+        select {
+          margin-left: 10px;
+        }
+      }
+    }
+    .submit-button {
+      text-align: center;
+      margin: 20px 0;
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+
