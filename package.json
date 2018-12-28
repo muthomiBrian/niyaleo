@@ -1,0 +1,35 @@
+{
+  "name": "niyaleo",
+  "version": "1.0.0",
+  "description": "Todo list with a place to put new tasks you are not ready to start on yet.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muthomiBrian/niyaleo.git"
+  },
+  "keywords": [
+    "Todo",
+    "Tasks"
+  ],
+  "author": "Brian Muthomi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muthomiBrian/niyaleo/issues"
+  },
+  "homepage": "https://github.com/muthomiBrian/niyaleo#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "del": "^3.0.0",
+    "eslint": "^5.11.1",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-gzip": "^1.4.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.1",
+    "mocha": "^5.2.0",
+    "pug": "^2.0.3"
+  }
+}
