@@ -1,10 +1,10 @@
 const CACHE_NAME = 'niyaleo-cache-v1';
 const urlsToCache = [
-  '/',
-  '/tasks.html',
-  '/todo.html',
-  '/css/main.css',
-  '/js/main.js'
+  './',
+  './tasks.html',
+  './todo.html',
+  './css/main.css',
+  './js/main.js'
 ];
 
 self.addEventListener('install', function(event) {
