@@ -24,6 +24,10 @@
   color: $font-warning
 }
 
+.align-right {
+  text-align: right;
+}
+
 // UI elements
 button {
   min-height: 40px;
@@ -65,7 +69,7 @@ a {
   display: flex;
   .brand {
     font-size: 1em;
-    width: calc( 100% - 33px);
+    width: calc( 100% - 54px);
   }
   .menu {
     color: $font-dark;
@@ -196,4 +200,43 @@ a {
   }
 }
 
+// Todo
+
+.todo-container {
+  margin-top: 20px;
+}
+
+.input-group {
+  label {
+    input[type="checkbox"] {
+      min-height: 0;
+      transform: scale(1.2);
+      
+    }
+    span {
+      margin-left: 20px;
+    }
+  }
+}
+
+.todo {
+  margin-bottom: 20px;
+}
+
+.todo-footer {
+  margin-top: 20px;
+  display: flex;
+  span {
+    width: 50%;
+  }
+}
+
+.todo-opt {
+  text-align: center;
+
+  button {
+    width: 80%;
+    margin-bottom: 10px;
+  }
+}
 

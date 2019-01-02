@@ -1,0 +1,34 @@
+<!DOCTYPE html><!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Niya leo</title><link rel="stylesheet" href="./css/main.css"></head><body><header class="header"><nav class="nav"><a class="brand" href="/">Niya leo</a><button class="menu"><a href="/tasks.html">tasks</a></button></nav></header><main class="main"><div class="container"><p class="page-header">Todo</p></div><div class="todo-container"><div class="todo-opt container" hidden><button>Remove from todo list</button><button class="button-light warning">Archive task</button></div></div></main><script src="./js/main.js"></script><script>TodoList.getTodos().then(todos => {
+  TodoList.renderTodo(todos,'.todo-container', priorityEnum)
+})
+
+class CompletedTasks {
+  static openCompletedDatabase() {
+     return idb.open('completedList', 1, upgradeDB => {
+      switch (upgradeDB.oldVersion) {
+      case 0:
+        upgradeDB.createObjectStore('completedList', {keyPath: 'id'});
+      }
+    });
+  }
+
+  static addCompleted(taskId) {
+    return TaskRepository.getTaskStatic(taskId).then(task => {
+      if (!task) return;
+      return CompletedTasks.openCompletedDatabase().then(db => {
+        if (!db) return;
+        return db
+          .transaction('completedList', 'readwrite')
+          .objectStore('completedList')
+          .put(task)
+      }).then(() => {
+        return Promise.all(
+          [TodoList.deleteTodo(taskId),
+          TaskRepository.deleteTask(taskId)]
+        ).then(() => {
+          location.reload();
+        })
+      })
+    })
+  }
+}</script></body></html>

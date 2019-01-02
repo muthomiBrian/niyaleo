@@ -10,102 +10,107 @@ html(lang="en")
     header.header
       nav.nav
         a.brand(href="/") Niya leo
-        button.menu ☰
-    main.main
-      .container
-        p.page-header Your tasks
-      .task-container
-    .center-float
-      .new-task(hidden)
-        .new-task-header
-          p.form-header Add task
-          button.close-new(onclick="hideCreateForm('.new-task', '.new-task-button')") x
-        form#createTask(action="" onsubmit="createTask(event)")
-          .input-group
-            label(for="taskDescNew" hidden) Task 
-            textarea#taskDescNew.control-element(name="taskDescNew" placeholder="Task" required maxlength="240")
-          .form-footer
-            .input-group.priority
-              label(for="taskPriority" hidden) Priority
-              select#taskPriority(name="taskPriority" required)
-                option(value="3") Low
-                option(value="2") Mid
-                option(value="1") High
-            .input-group.estimate
-              label(for="taskTime") Estimate
-              select#taskTime(name="taskTime" required)
-                option(value="0.5 hr") 0.5 hr
-                option(value="1 hr") 1 hr
-                option(value="2 hr") 2 hr
-                option(value="4 hr") 4 hr
-                option(value="8 hr") 8 hr
-                option(value="2 days") 2 days
-                option(value="1 week") 1 week
-          .submit-button
-            button(type="submit") Save Task
-      button.new-task-button(onclick="showCreateForm('.new-task', '.new-task-button')") New Task
-    .task-edit-modal(hidden)
-      div.modal-overlay
-      div.task-detail
-        .task-detail-header
-          p.task-detail-para Edit Task
-          button.button-light(onclick="TaskList.closeEdit('.task-edit-modal')") Close
-        form#editTask(action="")
-          .input-group
-            label(for="taskDescModal" hidden) Task 
-            textarea#taskDescModal.control-element(name="taskDescModal" placeholder="Task" required maxlength="240")
-          .form-footer
-            .input-group.priority
-              label(for="taskPriorityModal" hidden) Priority
-              select#taskPriorityModal(name="taskPriorityModal" required)
-                option(value="3") Low
-                option(value="2") Mid
-                option(value="1") High
-            .input-group.estimate
-              label(for="taskTimeModal") Estimate
-              select#taskTimeModal(name="taskTimeModal" required)
-                option(value="0.5 hr") 0.5 hr
-                option(value="1 hr") 1 hr
-                option(value="2 hr") 2 hr
-                option(value="4 hr") 4 hr
-                option(value="8 hr") 8 hr
-                option(value="2 days") 2 days
-                option(value="1 week") 1 week
-          .buttons
-            button(type="submit") Save
-            button Add to todo
-            button.button-light.warning Archive task
-    script(src="./js/main.js")
-    script.
-      const taskRepo = new TaskRepository();
-      const taskList = new TaskList('.task-container', priorityEnum, taskRepo);
-      
-      taskRepo.getTasks().then(tasks => {
-        if (!tasks) return;
-        return taskList.renderTasks(taskList.sortTasks(tasks))
-      })
+        block nav
+          button.menu 
+            a(href="/todo.html") todo
+    block content
+      main.main
+        .container
+          p.page-header Your tasks
+        .task-container
+      .center-float
+        .new-task(hidden)
+          .new-task-header
+            p.form-header Add task
+            button.close-new(onclick="hideCreateForm('.new-task', '.new-task-button')") x
+          form#createTask(action="" onsubmit="createTask(event)")
+            .input-group
+              label(for="taskDescNew" hidden) Task 
+              textarea#taskDescNew.control-element(name="taskDescNew" placeholder="Task" required maxlength="240")
+            .form-footer
+              .input-group.priority
+                label(for="taskPriority" hidden) Priority
+                select#taskPriority(name="taskPriority" required)
+                  option(value="3") Low
+                  option(value="2") Mid
+                  option(value="1") High
+              .input-group.estimate
+                label(for="taskTime") Estimate
+                select#taskTime(name="taskTime" required)
+                  option(value="0.5 hr") 0.5 hr
+                  option(value="1 hr") 1 hr
+                  option(value="2 hr") 2 hr
+                  option(value="4 hr") 4 hr
+                  option(value="8 hr") 8 hr
+                  option(value="2 days") 2 days
+                  option(value="1 week") 1 week
+            .submit-button
+              button(type="submit") Save Task
+        button.new-task-button(onclick="showCreateForm('.new-task', '.new-task-button')") New Task
+      .task-edit-modal(hidden)
+        div.modal-overlay
+        div.task-detail
+          .task-detail-header
+            p.task-detail-para Edit Task
+            button.button-light(onclick="TaskList.closeEdit('.task-edit-modal')") Close
+          form#editTask(action="")
+            .input-group
+              label(for="taskDescModal" hidden) Task 
+              textarea#taskDescModal.control-element(name="taskDescModal" placeholder="Task" required maxlength="240")
+            .form-footer
+              .input-group.priority
+                label(for="taskPriorityModal" hidden) Priority
+                select#taskPriorityModal(name="taskPriorityModal" required)
+                  option(value="3") Low
+                  option(value="2") Mid
+                  option(value="1") High
+              .input-group.estimate
+                label(for="taskTimeModal") Estimate
+                select#taskTimeModal(name="taskTimeModal" required)
+                  option(value="0.5 hr") 0.5 hr
+                  option(value="1 hr") 1 hr
+                  option(value="2 hr") 2 hr
+                  option(value="4 hr") 4 hr
+                  option(value="8 hr") 8 hr
+                  option(value="2 days") 2 days
+                  option(value="1 week") 1 week
+            .buttons
+              button(type="submit") Save
+              button#addToTodo(type="button" onclick="TodoList.addToTodo('#editTask','.task-edit-modal')") Add to todo
+              button.button-light.warning Archive task
+    block scripts
+      script(src="./js/main.js")
+      script.
+        const taskRepo = new TaskRepository();
+        const taskList = new TaskList('.task-container', priorityEnum, taskRepo);
 
-      function showCreateForm(form, button) {
-        document.querySelector(form).removeAttribute('hidden');
-        document.querySelector(button).setAttribute('hidden', 'true');
-      }
+        
+        taskRepo.getTasks().then(tasks => {
+          if (!tasks) return;
+          return taskList.renderTasks(taskList.sortTasks(tasks))
+        })
 
-      function hideCreateForm(form, button) {
-        document.querySelector(button).removeAttribute('hidden');
-        document.querySelector(form).setAttribute('hidden', 'true')
-      }    
-
-      function createTask(event) {
-        event.preventDefault();
-        const form = document.querySelector('#createTask');
-        const taskData = {
-          description: form.taskDescNew.value,
-          priority: form.taskPriority.value,
-          time: form.taskTime.value
+        function showCreateForm(form, button) {
+          document.querySelector(form).removeAttribute('hidden');
+          document.querySelector(button).setAttribute('hidden', 'true');
         }
-        const task = new TaskFactory(taskData)
-        taskList.renderTask(task);
-        taskRepo.storeTask(task);
-        console.log(task);
-      }
-      
+
+        function hideCreateForm(form, button) {
+          document.querySelector(button).removeAttribute('hidden');
+          document.querySelector(form).setAttribute('hidden', 'true')
+        }    
+
+        function createTask(event) {
+          event.preventDefault();
+          const form = document.querySelector('#createTask');
+          const taskData = {
+            description: form.taskDescNew.value,
+            priority: form.taskPriority.value,
+            time: form.taskTime.value
+          }
+          const task = new TaskFactory(taskData)
+          taskList.renderTask(task);
+          taskRepo.storeTask(task);
+          console.log(task);
+        }
+        

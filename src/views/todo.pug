@@ -1,0 +1,51 @@
+extends tasks.pug
+
+block nav
+  button.menu
+    a(href="/tasks.html") tasks
+
+block content
+  main.main
+    .container
+      p.page-header Todo
+    .todo-container
+      .todo-opt.container(hidden)
+        button Remove from todo list
+        button.button-light.warning Archive task
+block scripts
+  script(src="./js/main.js")
+  script.
+    TodoList.getTodos().then(todos => {
+      TodoList.renderTodo(todos,'.todo-container', priorityEnum)
+    })
+
+    class CompletedTasks {
+      static openCompletedDatabase() {
+         return idb.open('completedList', 1, upgradeDB => {
+          switch (upgradeDB.oldVersion) {
+          case 0:
+            upgradeDB.createObjectStore('completedList', {keyPath: 'id'});
+          }
+        });
+      }
+
+      static addCompleted(taskId) {
+        return TaskRepository.getTaskStatic(taskId).then(task => {
+          if (!task) return;
+          return CompletedTasks.openCompletedDatabase().then(db => {
+            if (!db) return;
+            return db
+              .transaction('completedList', 'readwrite')
+              .objectStore('completedList')
+              .put(task)
+          }).then(() => {
+            return Promise.all(
+              [TodoList.deleteTodo(taskId),
+              TaskRepository.deleteTask(taskId)]
+            ).then(() => {
+              location.reload();
+            })
+          })
+        })
+      }
+    }

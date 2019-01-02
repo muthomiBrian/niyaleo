@@ -8,10 +8,14 @@ class TaskList {
   editTask(taskId, taskEditModalSelector, formSelector) {
     const editModal = document.querySelector(taskEditModalSelector);
     const form = document.querySelector(formSelector);
+
+    form.setAttribute('data-id', taskId);
+
     this.taskRepo.getTask(taskId).then(task => {
       form.taskDescModal.value = task.description;
       form.taskPriorityModal.value = task.priority;
       form.taskTimeModal.value = task.time;
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const changedTask = {

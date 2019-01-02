@@ -336,6 +336,9 @@ const mockTasks = [
     self.idb = exp;
   }
 }());
+const priorityEnum = {
+  1: 'High', 2: 'Mid', 3: 'Low', 'High': 1, 'Mid': 2, 'Low': 3
+};
 class TaskFactory{
   constructor(task) {
     this.description = task.description;
@@ -373,10 +376,14 @@ class TaskList {
   editTask(taskId, taskEditModalSelector, formSelector) {
     const editModal = document.querySelector(taskEditModalSelector);
     const form = document.querySelector(formSelector);
+
+    form.setAttribute('data-id', taskId);
+
     this.taskRepo.getTask(taskId).then(task => {
       form.taskDescModal.value = task.description;
       form.taskPriorityModal.value = task.priority;
       form.taskTimeModal.value = task.time;
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const changedTask = {
@@ -479,6 +486,15 @@ class TaskRepository {
     });
   }
 
+  static openTaskDB() {
+    return idb.open('tasks-repo', 1, upgradeDB => {
+      switch (upgradeDB.oldVersion) {
+      case 0:
+        upgradeDB.createObjectStore('tasks-repo', {keyPath: 'id'});
+      }
+    });
+  }
+
   storeTask(task) {
     return this.db.then(db => {
       if (!db) return;
@@ -508,10 +524,99 @@ class TaskRepository {
         .get(id);
     });
   }
+
+  static getTaskStatic(id) {
+    return TaskRepository.openTaskDB().then(db => {
+      if (!db) return;
+      return db
+        .transaction('tasks-repo')
+        .objectStore('tasks-repo')
+        .get(id);
+    });
+  }
+
+  static deleteTask(taskId) {
+    return TaskRepository.openTaskDB().then(db => {
+      if (!db) return;
+      return db
+        .transaction('tasks-repo', 'readwrite')
+        .objectStore('tasks-repo')
+        .delete(taskId);
+    });
+  }
 }
-const priorityEnum = {
-  1: 'High', 2: 'Mid', 3: 'Low', 'High': 1, 'Mid': 2, 'Low': 3
-};
+class TodoList {
+  static openTodoDb() {
+    return idb.open('todoList', 1, upgradeDB => {
+      switch (upgradeDB.oldVersion) {
+      case 0:
+        upgradeDB.createObjectStore('todoList', {keyPath: 'id'});
+      }
+    });
+  }
+
+  static addToTodo(formId, taskEditModalSelector) {
+    const form = document.querySelector(formId);
+    return TaskRepository.getTaskStatic(form.dataset.id)
+      .then(task => {
+        if (!task) return;
+        return TodoList.openTodoDb()
+          .then(db => {
+            if (!db) return;
+            return db
+              .transaction('todoList', 'readwrite')
+              .objectStore('todoList')
+              .put(task);
+          })
+          .then(() => {
+            TaskList.closeEdit(taskEditModalSelector);
+          });
+      });
+  }
+
+  static getTodos() {
+    return TodoList.openTodoDb().then(db => {
+      if (!db) return;
+      return db
+        .transaction('todoList', 'readwrite')
+        .objectStore('todoList')
+        .getAll();
+    });
+  }
+
+  static deleteTodo(taskId) {
+    return TodoList.openTodoDb().then(db => {
+      if (!db) return;
+      console.log('called')
+      return db
+        .transaction('todoList', 'readwrite')
+        .objectStore('todoList')
+        .delete(taskId);
+    });
+  }
+
+  static renderTodo(todos, todoContainer, priorityEnum) {
+    const todoHTML = todos.reduce((acc, todo) => {
+      return acc + `
+      <div class="todo container">
+        <div class="input-group">
+          <label>
+            <input type="checkbox" id='task${todo.id}' data-id="${todo.id}" onclick="CompletedTasks.addCompleted('${todo.id}')"/ >
+            <span>${todo.description}</span>
+          </label>
+        </div>
+        <div class="todo-footer">
+          <span>Priority: ${priorityEnum[todo.priority]}</span>
+          <span class="align-right">Estimate: ${todo.time}</span>
+        </div>
+      </div>
+    `;
+    }, '');
+
+    const todoCont = document.querySelector(todoContainer);
+    todoCont.insertAdjacentHTML('beforeend', todoHTML);
+  }
+}
 function hyphenate(string) {
   if (string.includes(' ')) {
     let newString = string.replace(' ', '-');
