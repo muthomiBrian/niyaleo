@@ -20,6 +20,15 @@ const mockTasks = [
   { id: 10, description: 'Some random task you need to do and describe a lot about it because it is very involved',
     priority: 3, time: '1 hr'},
 ];
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+      // Registration was successful
+    }, function(err) {
+      // registration failed :(
+    });
+  });
+}
 'use strict';
 
 (function() {
@@ -336,9 +345,6 @@ const mockTasks = [
     self.idb = exp;
   }
 }());
-const priorityEnum = {
-  1: 'High', 2: 'Mid', 3: 'Low', 'High': 1, 'Mid': 2, 'Low': 3
-};
 class TaskFactory{
   constructor(task) {
     this.description = task.description;
@@ -617,6 +623,9 @@ class TodoList {
     todoCont.insertAdjacentHTML('beforeend', todoHTML);
   }
 }
+const priorityEnum = {
+  1: 'High', 2: 'Mid', 3: 'Low', 'High': 1, 'Mid': 2, 'Low': 3
+};
 function hyphenate(string) {
   if (string.includes(' ')) {
     let newString = string.replace(' ', '-');

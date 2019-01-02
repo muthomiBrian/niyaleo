@@ -32,9 +32,15 @@ function js() {
     .pipe(gulp.dest('./public/js/'));
 }
 
+function serviceWorker() {
+  return gulp.src('./src/service-worker/service-worker.js')
+    .pipe(gulp.dest('./public/'));
+}
+
 
 gulp.task('default', () => {
-  gulp.watch('./src', gulp.series(html, css, js));
+  gulp.watch('./src', gulp.series(html, css, js, serviceWorker));
 });
-gulp.task('build',gulp.series(clean, html, css, js));
+
+gulp.task('build',gulp.series(clean, html, css, js, serviceWorker));
 
