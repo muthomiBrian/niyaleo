@@ -1,4 +1,4 @@
-const CACHE_NAME = 'niyaleo-cache-v1';
+const CACHE_NAME = 'niyaleo-cache-v2';
 const urlsToCache = [
   './',
   './tasks.html',
