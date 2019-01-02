@@ -1,5 +1,10 @@
-<!DOCTYPE html><!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Niya leo</title><link rel="stylesheet" href="./css/main.css"></head><body><header class="header"><nav class="nav"><a class="brand" href="/">Niya leo</a><button class="menu">☰</button></nav></header><main class="main"><div class="container"><p class="page-header">Your tasks</p></div><div class="task-container"></div></main><div class="center-float"><div class="new-task" hidden><div class="new-task-header"><p class="form-header">Add task</p><button class="close-new" onclick="hideCreateForm('.new-task', '.new-task-button')">x</button></div><form action=""><div class="input-group"><label for="taskDescNew" hidden>Task </label><textarea class="control-element" id="taskDescNew" name="taskDescNew" placeholder="Task"></textarea></div><div class="form-footer"><div class="input-group priority"><label for="taskPriority" hidden>Priority</label><select id="taskPriority" name="taskPriority"><option value="" selected>Set priority</option><option value="3">Low</option><option value="2">Mid</option><option value="1">High</option></select></div><div class="input-group estimate"><label for="taskTime">Estimate</label><select id="taskTime" name="taskTime"><option value="0.5 hr">0.5 hr</option><option value="1 hr">1 hr</option><option value="2 hr">2 hr</option><option value="4 hr">4 hr</option><option value="8 hr">8 hr</option><option value="2 days">2 days</option><option value="1 week">1 week</option></select></div></div><div class="submit-button"><button>Save Task</button></div></form></div><button class="new-task-button" onclick="showCreateForm('.new-task', '.new-task-button')">New Task</button></div><script src="./js/main.js"></script><script>const sortedTasks = sortTasks(mockTasks)
-renderTasks('.task-container', sortedTasks, priorityEnum);
+<!DOCTYPE html><!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Niya leo</title><link rel="stylesheet" href="./css/main.css"></head><body><header class="header"><nav class="nav"><a class="brand" href="/">Niya leo</a><button class="menu">☰</button></nav></header><main class="main"><div class="container"><p class="page-header">Your tasks</p></div><div class="task-container"></div></main><div class="center-float"><div class="new-task" hidden><div class="new-task-header"><p class="form-header">Add task</p><button class="close-new" onclick="hideCreateForm('.new-task', '.new-task-button')">x</button></div><form id="createTask" action="" onsubmit="createTask(event)"><div class="input-group"><label for="taskDescNew" hidden>Task </label><textarea class="control-element" id="taskDescNew" name="taskDescNew" placeholder="Task" required maxlength="240"></textarea></div><div class="form-footer"><div class="input-group priority"><label for="taskPriority" hidden>Priority</label><select id="taskPriority" name="taskPriority" required><option value="3">Low</option><option value="2">Mid</option><option value="1">High</option></select></div><div class="input-group estimate"><label for="taskTime">Estimate</label><select id="taskTime" name="taskTime" required><option value="0.5 hr">0.5 hr</option><option value="1 hr">1 hr</option><option value="2 hr">2 hr</option><option value="4 hr">4 hr</option><option value="8 hr">8 hr</option><option value="2 days">2 days</option><option value="1 week">1 week</option></select></div></div><div class="submit-button"><button type="submit">Save Task</button></div></form></div><button class="new-task-button" onclick="showCreateForm('.new-task', '.new-task-button')">New Task</button></div><div class="task-edit-modal" hidden><div class="modal-overlay"></div><div class="task-detail"><div class="task-detail-header"><p class="task-detail-para">Edit Task</p><button class="button-light" onclick="TaskList.closeEdit('.task-edit-modal')">Close</button></div><form id="editTask" action=""><div class="input-group"><label for="taskDescModal" hidden>Task </label><textarea class="control-element" id="taskDescModal" name="taskDescModal" placeholder="Task" required maxlength="240"></textarea></div><div class="form-footer"><div class="input-group priority"><label for="taskPriorityModal" hidden>Priority</label><select id="taskPriorityModal" name="taskPriorityModal" required><option value="3">Low</option><option value="2">Mid</option><option value="1">High</option></select></div><div class="input-group estimate"><label for="taskTimeModal">Estimate</label><select id="taskTimeModal" name="taskTimeModal" required><option value="0.5 hr">0.5 hr</option><option value="1 hr">1 hr</option><option value="2 hr">2 hr</option><option value="4 hr">4 hr</option><option value="8 hr">8 hr</option><option value="2 days">2 days</option><option value="1 week">1 week</option></select></div></div><div class="buttons"><button type="submit">Save</button><button>Add to todo</button><button class="button-light warning">Archive task</button></div></form></div></div><script src="./js/main.js"></script><script>const taskRepo = new TaskRepository();
+const taskList = new TaskList('.task-container', priorityEnum, taskRepo);
+
+taskRepo.getTasks().then(tasks => {
+  if (!tasks) return;
+  return taskList.renderTasks(taskList.sortTasks(tasks))
+})
 
 function showCreateForm(form, button) {
   document.querySelector(form).removeAttribute('hidden');
@@ -9,4 +14,18 @@ function showCreateForm(form, button) {
 function hideCreateForm(form, button) {
   document.querySelector(button).removeAttribute('hidden');
   document.querySelector(form).setAttribute('hidden', 'true')
+}    
+
+function createTask(event) {
+  event.preventDefault();
+  const form = document.querySelector('#createTask');
+  const taskData = {
+    description: form.taskDescNew.value,
+    priority: form.taskPriority.value,
+    time: form.taskTime.value
+  }
+  const task = new TaskFactory(taskData)
+  taskList.renderTask(task);
+  taskRepo.storeTask(task);
+  console.log(task);
 }</script></body></html>

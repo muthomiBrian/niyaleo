@@ -7,8 +7,21 @@
   background-color: $background-color-white;
 }
 
+[disabled] {
+  background-color: #999;
+}
+
 .control-element {
   width: 100%;
+}
+
+.button-light {
+  background: transparent;
+  color: $font-dark;
+}
+
+.warning {
+  color: $font-warning
 }
 
 // UI elements
@@ -125,23 +138,60 @@ a {
         margin-right: -20px;
       }
     }
-    .form-footer {
-      display: flex;
-      .priority {
-        width: 100%;
-      }
-      .estimate {
-        select {
-          margin-left: 10px;
-        }
-      }
-    }
+    
     .submit-button {
       text-align: center;
       margin: 20px 0;
       button {
         width: 100%;
       }
+    }
+  }
+}
+
+.form-footer {
+  display: flex;
+  .priority {
+    width: 100%;
+  }
+  .estimate {
+    select {
+      margin-left: 10px;
+    }
+  }
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: $background-dark;
+  opacity: 0.8;
+}
+
+.task-detail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 80px);
+  margin: 20px;
+  padding: 20px;
+  background: $background-color-white;
+  .task-detail-header {
+    display: flex;
+    margin-bottom: 20px;
+    .task-detail-para {
+      width: calc(100% - 56px);
+    }
+  }
+  .buttons {
+    text-align: center;
+    margin-top: 40px;
+    button {
+      width: 100%;
+      margin-bottom: 5px;
     }
   }
 }
