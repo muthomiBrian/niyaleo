@@ -23,7 +23,7 @@ html(lang="en")
           .new-task-header
             p.form-header Add task
             button.close-new(onclick="hideCreateForm('.new-task', '.new-task-button')") x
-          form#createTask(action="" onsubmit="createTask(event)")
+          form#createTask(action="" onsubmit="createTask(event, '#createTask')")
             .input-group
               label(for="taskDescNew" hidden) Task 
               textarea#taskDescNew.control-element(name="taskDescNew" placeholder="Task" required maxlength="240")
@@ -100,9 +100,9 @@ html(lang="en")
           document.querySelector(form).setAttribute('hidden', 'true')
         }    
 
-        function createTask(event) {
+        function createTask(event, formSel) {
           event.preventDefault();
-          const form = document.querySelector('#createTask');
+          const form = document.querySelector(formSel);
           const taskData = {
             description: form.taskDescNew.value,
             priority: form.taskPriority.value,
@@ -110,7 +110,9 @@ html(lang="en")
           }
           const task = new TaskFactory(taskData)
           taskList.renderTask(task);
-          taskRepo.storeTask(task);
+          taskRepo.storeTask(task).then(() => {
+            form.reset();
+          });
         }
 
         class ArchivedTasks {
