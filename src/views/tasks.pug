@@ -77,7 +77,7 @@ html(lang="en")
             .buttons
               button(type="submit") Save
               button#addToTodo(type="button" onclick="TodoList.addToTodo('#editTask','.task-edit-modal')") Add to todo
-              button.button-light.warning Archive task
+              button.button-light.warning(type="button" onclick="ArchivedTasks.addArchivedTask('#editTask')") Archive task
     block scripts
       script(src="./js/main.js")
       script.
@@ -111,6 +111,40 @@ html(lang="en")
           const task = new TaskFactory(taskData)
           taskList.renderTask(task);
           taskRepo.storeTask(task);
-          console.log(task);
+        }
+
+        class ArchivedTasks {
+          static openArchivedTasksDb() {
+            return idb.open('archivedTasks', 1, upgradeDB => {
+              switch (upgradeDB.oldVersion) {
+              case 0:
+                upgradeDB.createObjectStore('archivedTasks', {keyPath: 'id'});
+              }
+            });
+          }
+
+          static addArchivedTask(form) {
+            const formEl = document.querySelector(form);
+            const taskId = formEl.dataset.id;
+
+            return TaskRepository.getTaskStatic(taskId).then(task => {
+              if (!task) return;
+              return ArchivedTasks.openArchivedTasksDb().then(db => {
+                if (!db) return;
+
+                return db
+                  .transaction('archivedTasks', 'readwrite')
+                  .objectStore('archivedTasks')
+                  .put(task)
+              }).then(() => {
+                return Promise.all([
+                  TaskRepository.deleteTask(taskId),
+                  TodoList.deleteTodo(taskId)
+                ]).then(() => {
+                  location.reload();
+                })
+              })
+            })
+          }
         }
         

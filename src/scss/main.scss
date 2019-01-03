@@ -164,9 +164,8 @@ a {
     }
   }
 }
-
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -176,7 +175,7 @@ a {
 }
 
 .task-detail {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: calc(100% - 80px);

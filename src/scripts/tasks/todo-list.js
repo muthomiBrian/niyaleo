@@ -40,7 +40,6 @@ class TodoList {
   static deleteTodo(taskId) {
     return TodoList.openTodoDb().then(db => {
       if (!db) return;
-      console.log('called')
       return db
         .transaction('todoList', 'readwrite')
         .objectStore('todoList')
